@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tabla con información Inventario Forestal Geomatica</title>
+  <link rel="shortcut icon" href="/static/assets/ico/favicon.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <table class="striped centered">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Nombre común</th>
+          <th>Origen</th>
+          <th>Ubicación (Sede)</th>
+          <th>Más información</th>
+        </tr>
+      </thead>
+      <tbody id="tabla-info"></tbody>
+    </table>
+  </div>
+
+
+
+  <footer class="page-footer teal">
+    <div class="container">
+      <div class="row">
+        <div class="col s12 m8">
+          <h5 class="white-text">Inventario Forestal</h5>
+          <p class="grey-text text-lighten-4">Este aplicativo ha sido desarrollado para la consulta del inventario forestal realizado en el marco del estudio "Diagnóstico y Valoración de Aspectos Ambientales para la Formulación del Plan Maestro de la Universidad Industrial de Santander" proyecto liderado por planeación UIS.
+            <br>Para mayor información comunicarse con informaticacivil@uis.edu.co </p>
+        </div>
+        <div class="col s12 m4 right-align">
+          <h5 class="white-text">Sedes</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Salud</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+        <div class="left">
+          Desarrollado por <a class="brown-text text-lighten-3" href="http://geomatica.uis.edu.co">Geomática, gestión y optimización de sistemas</a>
+        </div>
+        <div class="right">
+          Powered by <a class="brown-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="/modules/materialize-css/js/materialize.js"></script>
+  <script src="/modules/bootstrap/js/transition.js"></script>
+  <script src="/modules/bootstrap/js/collapse.js"></script>
+  <script src="/js/init.js"></script>
+  <script>
+    $(document).ready(function() {
+      $.ajax({
+        url: 'obtener_archivos.php',
+        dataType: 'json',
+        success: function(data) {
+          data.forEach(function(archivo) {
+            $.ajax({
+              url: archivo,
+              dataType: 'html',
+              success: function(data) {
+                var nombreComun = $(data).find('.tree-label:contains("Nombre común")').next('.tree-value').text();
+                var origen = $(data).find('.tree-label:contains("Origen")').next('.tree-value').text();
+                var sede = $(data).find('.tree-label:contains("Sede")').next('.tree-value').text();
+                var fotos = $(data).find('.slider li img');
+                var fotoIco = $(fotos[0]).attr('src');
+                //var fotoSrc = $(fotos[2]).attr('src');
+                console.log(fotos);
+                var fila = $('<tr>');
+                fila.append($('<td>').html(`<img src="${fotoIco}" alt="Foto" class="icono-imagen">`));
+                fila.append($('<td>').text(nombreComun));
+                fila.append($('<td>').text(origen));
+                fila.append($('<td>').text(sede));
+                fila.append($('<td>').html(`<a href="${archivo}" target="_blank">Ver detalles</a>`));
+                $('#tabla-info').append(fila);
+                //console.log(fotos); -->
+              }
+            });
+          });
+        }
+      });
+    });
+  </script>
+
+  <style>
+    .icono-imagen {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+    
+    .tabla-imagen {
+      max-width: 100px;
+      max-height: 100px;
+      width: auto;
+      height: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    tbody tr:hover {
+      background-color: #e6e6e6;
+    }
+  </style>
+</body>
+
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tabla con información Inventario Forestal Geomatica</title>
+  <link rel="shortcut icon" href="/static/assets/ico/favicon.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <table class="striped centered">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Etiqueta</th>
+          <th>Valor</th>
+          <th>Foto</th>
+          <th>Enlace</th>
+        </tr>
+      </thead>
+      <tbody id="tabla-info"></tbody>
+    </table>
+  </div>
+
+  <script>
+    $(document).ready(function() {
+      $.ajax({
+        url: './', // Carpeta actual
+        success: function(data) {
+          var archivos = [];
+          $(data).find('a[href$=".html"]').each(function() {
+            archivos.push($(this).attr('href'));
+          });
+
+          archivos.forEach(function(archivo) {
+            $.ajax({
+              url: archivo,
+              dataType: 'html',
+              success: function(data) {
+                var nombreComun = $(data).find('.tree-label:contains("Nombre común")').next('.tree-value').text();
+                var fotos = $(data).find('.slider li img');
+                var fotoIco = $(fotos[0]).attr('src');
+                var fotoSrc = $(fotos[2]).attr('src');
+
+                var fila = $('<tr>');
+                fila.append($('<td>').html(`<img src="${fotoIco}" alt="Foto" class="icono-imagen">`));
+                fila.append($('<td>').text('Nombre común'));
+                fila.append($('<td>').text(nombreComun));
+                fila.append($('<td>').html(`<img src="${fotoSrc}" alt="Foto" class="tabla-imagen">`));
+                fila.append($('<td>').html(`<a href="${archivo}" target="_blank">Ver detalles</a>`));
+                $('#tabla-info').append(fila);
+                console.log(fila);
+              }
+            });
+          });
+        }
+      });
+    });
+  </script>
+
+  <style>
+    .icono-imagen {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+    
+    .tabla-imagen {
+      max-width: 100px;
+      max-height: 100px;
+      width: auto;
+      height: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    tbody tr:hover {
+      background-color: #e6e6e6;
+    }
+
+  </style>
+</body>
+
+</html>

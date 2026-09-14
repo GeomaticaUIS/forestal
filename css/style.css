@@ -1,0 +1,131 @@
+/* Custom Stylesheet */
+/**
+ * Use this file to override Materialize files so you can update
+ * the core Materialize files in the future
+ *
+ * Made By MaterializeCSS.com
+ */
+
+nav ul a,
+nav .brand-logo {
+  color: #444;
+}
+
+p {
+  line-height: 2rem;
+}
+
+.glow {
+  text-shadow: 2px 4px 3px rgba(0,0,0,0.6);;
+}
+
+.button-collapse {
+  color: #26a69a;
+}
+
+.icon-block {
+  padding: 0 15px;
+}
+.icon-block .material-icons {
+  font-size: inherit;
+}
+
+footer.page-footer {
+  margin: 0;
+}
+
+footer p {
+  line-height: 1.2rem;
+}
+
+footer img.correo{
+  position: relative;
+  top: 3.5px;
+  height: 1rem;
+}
+
+/* sticky footer */
+@media only screen and (min-width : 992px) {
+  html {
+    position: relative;
+    min-height: 100%;
+  }
+  body {
+    /* Margin bottom by footer height */
+    margin-bottom: 233px;
+  }
+  footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 233px;
+  }
+}
+
+.tree-item{
+  padding: 0.3rem 0;
+}
+
+.tree-label{
+  color: #9e9e9e;
+  font-size: 0.8rem;
+  line-height: 0.8rem;
+}
+.tree-value{
+  line-height: 1rem;
+}
+
+.slider .indicators{
+  position: absolute;
+  z-index: 2;
+  bottom: 60px;
+}
+
+/*
+ * From third party
+ */
+
+.fade {
+  opacity: 0;
+  -webkit-transition: opacity .15s linear;
+       -o-transition: opacity .15s linear;
+          transition: opacity .15s linear;
+}
+.fade.in {
+  opacity: 1;
+}
+
+
+
+
+/*
+ * Boostrap collapse
+ */
+
+.collapse {
+  display: none;
+}
+.collapse.in {
+  display: block;
+}
+tr.collapse.in {
+  display: table-row;
+}
+tbody.collapse.in {
+  display: table-row-group;
+}
+.collapsing {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  -webkit-transition-timing-function: ease;
+       -o-transition-timing-function: ease;
+          transition-timing-function: ease;
+  -webkit-transition-duration: .35s;
+       -o-transition-duration: .35s;
+          transition-duration: .35s;
+  -webkit-transition-property: height, visibility;
+       -o-transition-property: height, visibility;
+          transition-property: height, visibility;
+}

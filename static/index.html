@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Geomatica</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Togusav" >
+
+    <!-- Le styles -->
+    <link href="/static/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="/static/assets/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="/static/assets/ico/favicon.png">
+
+  </head>
+
+  <body>
+
+  		<header class="header">
+      <div class="container" style="text-align: center">
+          <img src="/static/assets/img/muypronto.png" alt="Inventario Forestal, UIS">
+      </div>
+  		</header>
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script src="/static/assets/js/bootstrap.js"></script>
+   
+    <div class="container">
+      <table class="striped centered">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Etiqueta</th>
+            <th>Valor</th>
+            <th>Foto</th>
+            <th>Enlace</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-info"></tbody>
+      </table>
+    </div>
+  
+    <script>
+      $(document).ready(function() {
+        $.ajax({
+          url: '../inv/', // Carpeta actual LINUX_FORESTAL_PRO\www\forest\inv 
+          success: function(data) {
+            var archivos = [];
+            $(data).find('a[href$=".html"]').each(function() {
+              archivos.push($(this).attr('href'));
+            });
+  
+            archivos.forEach(function(archivo) {
+              $.ajax({
+                url: archivo,
+                dataType: 'html',
+                success: function(data) {
+                  var nombreComun = $(data).find('.tree-label:contains("Nombre común")').next('.tree-value').text();
+                  var fotos = $(data).find('.slider li img');
+                  var fotoIco = $(fotos[0]).attr('src');
+                  var fotoSrc = $(fotos[2]).attr('src');
+  
+                  var fila = $('<tr>');
+                  fila.append($('<td>').html(`<img src="${fotoIco}" alt="Foto" class="icono-imagen">`));
+                  fila.append($('<td>').text('Nombre común'));
+                  fila.append($('<td>').text(nombreComun));
+                  fila.append($('<td>').html(`<img src="${fotoSrc}" alt="Foto" class="tabla-imagen">`));
+                  fila.append($('<td>').html(`<a href="${archivo}" target="_blank">Ver detalles</a>`));
+                  $('#tabla-info').append(fila);
+                  console.log(fila);
+                }
+              });
+            });
+          }
+        });
+      });
+    </script>
+  
+    <style>
+      .icono-imagen {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+      
+      .tabla-imagen {
+        max-width: 100px;
+        max-height: 100px;
+        width: auto;
+        height: auto;
+      }
+  
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+  
+      th, td {
+        padding: 10px;
+        text-align: left;
+      }
+  
+      th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+      }
+  
+      tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+  
+      tbody tr:hover {
+        background-color: #e6e6e6;
+      }
+  
+    </style>
+
+
+  </body>
+</html>
